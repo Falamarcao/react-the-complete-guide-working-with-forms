@@ -17,6 +17,14 @@ const SimpleInput = (props) => {
 
   const handleOnChange = (event) => {
     setState(event.target.value);
+
+    // Use [event.target.value] instead of [state] here,
+    // because[useState] updates are scheduled,
+    // and we just updated the state,
+    // which could result in getting an old state value.
+    if (event.target.value.trim() !== "") {
+      setIsValid(true);
+    }
   };
 
   const handleOnBlur = (event) => {
@@ -24,7 +32,6 @@ const SimpleInput = (props) => {
 
     if (state.trim() === "") {
       setIsValid(false);
-      return;
     }
   };
 

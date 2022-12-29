@@ -7,6 +7,9 @@ const SimpleInput = (props) => {
   const isValid = state.trim() !== "";
   const isInvalidAndTouched = !isValid && isTouched;
 
+  let formIsValid = isValid; // && ageIsValid && emailIsValid; // if we got more form elements,
+  // we could separate [isValid] into multiple variables and check all them here.
+
   const handleOnChange = (event) => {
     setState(event.target.value);
   };
@@ -46,7 +49,9 @@ const SimpleInput = (props) => {
         )}
       </div>
       <div className="form-actions">
-        <button onClick={handleOnSubmit}>Submit</button>
+        <button disabled={!formIsValid} onClick={handleOnSubmit}>
+          Submit
+        </button>
       </div>
     </form>
   );

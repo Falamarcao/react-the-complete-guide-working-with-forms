@@ -12,6 +12,10 @@ const SimpleInput = (props) => {
   const handleOnSubmit = (event) => {
     event.preventDefault();
 
+    if (state.trim() === "") {
+      return;
+    }
+
     console.log("useState:\n" + state);
 
     console.log("useRef:\n" + nameRef.current.value);

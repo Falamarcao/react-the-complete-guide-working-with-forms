@@ -16,10 +16,16 @@ const SimpleInput = (props) => {
   }, [isValid]);
 
   const handleOnChange = (event) => {
-    if (!isTouched) {
-      setIsTouched(true);
-    }
     setState(event.target.value);
+  };
+
+  const handleOnBlur = (event) => {
+    setIsTouched(true);
+
+    if (state.trim() === "") {
+      setIsValid(false);
+      return;
+    }
   };
 
   const handleOnSubmit = (event) => {
@@ -51,6 +57,7 @@ const SimpleInput = (props) => {
           type="text"
           id="name"
           onChange={handleOnChange}
+          onBlur={handleOnBlur}
           value={state}
         />
         {isInvalidAndTouched && (

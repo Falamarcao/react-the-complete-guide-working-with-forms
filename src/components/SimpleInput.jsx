@@ -1,38 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
-// This is an example, the of useState and/or useRef depends on the objective.
 const SimpleInput = (props) => {
-  const nameRef = useRef();
   const [state, setState] = useState("");
-  const [isValid, setIsValid] = useState(false);
   const [isTouched, setIsTouched] = useState(false);
 
+  const isValid = state.trim() !== "";
   const isInvalidAndTouched = !isValid && isTouched;
-
-  useEffect(() => {
-    if (isValid) {
-      console.log("Field  " + nameRef.current.id + " is valid!");
-    }
-  }, [isValid]);
 
   const handleOnChange = (event) => {
     setState(event.target.value);
-
-    // Use [event.target.value] instead of [state] here,
-    // because[useState] updates are scheduled,
-    // and we just updated the state,
-    // which could result in getting an old state value.
-    if (event.target.value.trim() !== "") {
-      setIsValid(true);
-    }
   };
 
   const handleOnBlur = (event) => {
     setIsTouched(true);
-
-    if (state.trim() === "") {
-      setIsValid(false);
-    }
   };
 
   const handleOnSubmit = (event) => {
@@ -40,19 +20,14 @@ const SimpleInput = (props) => {
 
     setIsTouched(true);
 
-    if (state.trim() === "") {
-      setIsValid(false);
+    if (!isValid) {
       return;
     }
-    setIsValid(true);
 
     console.log("useState:\n" + state);
 
-    console.log("useRef:\n" + nameRef.current.value);
-
     setState("");
-
-    // nameRef.current.value = ""; // NOT A BEST PRACTICE to manipulate directly the DOM.
+    setIsTouched(false);
   };
 
   return (
@@ -60,7 +35,6 @@ const SimpleInput = (props) => {
       <div className={"form-control" + (isInvalidAndTouched ? " invalid" : "")}>
         <label htmlFor="name">Your Name</label>
         <input
-          ref={nameRef}
           type="text"
           id="name"
           onChange={handleOnChange}

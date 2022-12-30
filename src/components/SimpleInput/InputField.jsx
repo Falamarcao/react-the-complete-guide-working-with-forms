@@ -1,26 +1,24 @@
-import { useEffect, useState } from "react";
+import useValidation from "../../hooks/useValidation";
 
 const InputField = (props) => {
-  const [state, setState] = useState(props.value || "");
-  const [isTouched, setIsTouched] = useState(false);
+  const {
+    value,
+    validationMessage,
+    validation,
+    isTouched: isTouchedOut,
+    onChange,
+  } = props;
 
-  const validation = (value) => props.validation || value.trim() !== "";
-  const isValid = validation(state);
-  const isInvalid = !isValid && isTouched;
+  const [handleOnChange, handleOnBlur, state, isInvalid] = useValidation({
+    value,
+    validation,
+    isTouchedOut,
+    onChange,
+  });
 
-  const handleOnChange = (event) => {
-    setState(event.target.value);
-    props.onChange(event, validation(event.target.value)); // isValid is receiving old value
-  };
-
-  const handleOnBlur = (event) => {
-    setIsTouched(true);
-  };
-
-  const { isTouched: isTouchedOut } = props;
-  useEffect(() => {
-    setIsTouched(isTouchedOut);
-  }, [isTouchedOut]);
+  const _validationMessage = validationMessage
+    ? `${props.label} ${validationMessage}.`
+    : `You must provide ${props.label}.`;
 
   return (
     <div className={"form-control" + (isInvalid ? " invalid" : "")}>
@@ -33,9 +31,7 @@ const InputField = (props) => {
         onBlur={handleOnBlur}
         value={state}
       />
-      {isInvalid && (
-        <p className="error-text">You must provide {props.label}.</p>
-      )}
+      {isInvalid && <p className="error-text">{_validationMessage}</p>}
     </div>
   );
 };

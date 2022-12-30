@@ -39,6 +39,15 @@ const SimpleInput = (props) => {
     setIsTouched(false);
   };
 
+  const nameValidation = [(value) => value.trim().length > 5];
+
+  const ageValidation = [
+    (value) => {
+      const n = Number(value);
+      return n > 12 && n < 101;
+    },
+  ];
+
   return (
     <form>
       <InputField
@@ -46,6 +55,7 @@ const SimpleInput = (props) => {
         name="name"
         type="text"
         label="Your Name"
+        validation={nameValidation}
         isTouched={isTouched}
         onChange={handleOnChange}
       />
@@ -54,6 +64,8 @@ const SimpleInput = (props) => {
         name="age"
         type="number"
         label="Your Age"
+        validationMessage="must be between 12 and 100"
+        validation={ageValidation}
         isTouched={isTouched}
         onChange={handleOnChange}
       />

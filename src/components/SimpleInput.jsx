@@ -1,5 +1,5 @@
-import useForm from "../../hooks/Forms/useForm";
-import InputField from "../InputField";
+import useForm from "../hooks/Forms/useForm";
+import InputField from "./InputField";
 import Validator from "./validators";
 
 const SimpleInput = () => {
@@ -15,7 +15,7 @@ const SimpleInput = () => {
         name="name"
         type="text"
         label="Your Name"
-        validation={Validator.name}
+        validators={[Validator.name]}
         isTouched={isTouched}
         onChange={handleOnChange}
       />
@@ -25,7 +25,7 @@ const SimpleInput = () => {
         type="number"
         label="Your Age"
         validationMessage="must be between 12 and 100"
-        validation={Validator.age}
+        validators={[Validator.age]}
         isTouched={isTouched}
         onChange={handleOnChange}
       />

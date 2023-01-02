@@ -4,14 +4,14 @@ const InputField = (props) => {
   const {
     value,
     validationMessage,
-    validation,
+    validators,
     isTouched: isTouchedOut,
     onChange,
   } = props;
 
   const [handleOnChange, handleOnBlur, state, isInvalid] = useValidation({
     value,
-    validation,
+    validators,
     isTouchedOut,
     onChange,
   });

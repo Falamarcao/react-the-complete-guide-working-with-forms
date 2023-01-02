@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-const useValidation = ({ value, validation, isTouchedOut, onChange }) => {
+const useValidation = ({ value, validators, isTouchedOut, onChange }) => {
   const [state, setState] = useState(value || "");
   const [isTouched, setIsTouched] = useState(false);
 
   const validate = (value) =>
-    validation?.every((check) => check(value) === true) && value.trim() !== "";
+    validators?.every((check) => check(value) === true) && value.trim() !== "";
   const isValid = validate(state);
   const isInvalid = !isValid && isTouched;
 

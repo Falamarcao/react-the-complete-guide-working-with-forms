@@ -1,52 +1,12 @@
-import { useState, useReducer } from "react";
-import InputField from "./InputField";
+import useForm from "../../hooks/Forms/useForm";
+import InputField from "../InputField";
+import Validator from "./validators";
 
-const formReducer = (state, event) => ({
-  ...state,
-  [event.name]: { value: event.value, isValid: event.isValid },
-});
-
-const SimpleInput = (props) => {
-  const [formData, setFormData] = useReducer(formReducer, {
-    name: { isValid: false },
-    age: { isValid: false },
-  });
-  const [isTouched, setIsTouched] = useState(false);
-
-  let formIsValid = Object.values(formData).every(
-    (field) => field.isValid === true
-  );
-
-  const handleOnChange = (event, isValid) => {
-    setFormData({
-      name: event.target.name,
-      value: event.target.value,
-      isValid: isValid,
-    });
-  };
-
-  const handleOnSubmit = (event) => {
-    event.preventDefault();
-
-    setIsTouched(true);
-
-    if (!formIsValid) {
-      return;
-    }
-
+const SimpleInput = () => {
+  const action = (formData) =>
     console.log("formData:\n" + JSON.stringify(formData));
 
-    setIsTouched(false);
-  };
-
-  const nameValidation = [(value) => value.trim().length > 5];
-
-  const ageValidation = [
-    (value) => {
-      const n = Number(value);
-      return n > 12 && n < 101;
-    },
-  ];
+  const [handleOnChange, handleOnSubmit, isTouched, isValid] = useForm(action);
 
   return (
     <form>
@@ -55,7 +15,7 @@ const SimpleInput = (props) => {
         name="name"
         type="text"
         label="Your Name"
-        validation={nameValidation}
+        validation={Validator.name}
         isTouched={isTouched}
         onChange={handleOnChange}
       />
@@ -65,12 +25,12 @@ const SimpleInput = (props) => {
         type="number"
         label="Your Age"
         validationMessage="must be between 12 and 100"
-        validation={ageValidation}
+        validation={Validator.age}
         isTouched={isTouched}
         onChange={handleOnChange}
       />
       <div className="form-actions">
-        <button disabled={!formIsValid} onClick={handleOnSubmit}>
+        <button disabled={!isValid} onClick={handleOnSubmit}>
           Submit
         </button>
       </div>

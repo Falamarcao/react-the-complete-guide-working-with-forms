@@ -6,7 +6,10 @@ const SimpleInput = () => {
   const action = (formData) =>
     console.log("formData:\n" + JSON.stringify(formData));
 
-  const [handleOnChange, handleOnSubmit, isTouched, isValid] = useForm(action);
+  const [handleOnChange, handleOnSubmit, isTouched, isValid] = useForm(action, {
+    name: { isValid: false },
+    age: { isValid: false },
+  });
 
   return (
     <form>

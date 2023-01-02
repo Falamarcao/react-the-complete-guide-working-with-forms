@@ -5,11 +5,18 @@ const formReducer = (state, event) => ({
   [event.name]: { value: event.value, isValid: event.isValid },
 });
 
-const useForm = (action) => {
-  const [formData, setFormData] = useReducer(formReducer, {
-    name: { isValid: false },
-    age: { isValid: false },
-  });
+const useForm = (action, initStateOrFieldNames) => {
+  // if an Array transform field names into formData {"filedName": {isValid: false}, ...}
+  if (initStateOrFieldNames instanceof Array) {
+    initStateOrFieldNames = initStateOrFieldNames?.reduce((acc, curr) => ({
+      [curr]: { isValid: false },
+    }));
+  }
+
+  const [formData, setFormData] = useReducer(
+    formReducer,
+    initStateOrFieldNames || {}
+  );
   const [isTouched, setIsTouched] = useState(false);
 
   let isFormValid = Object.values(formData).every(
